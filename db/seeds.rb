@@ -6,6 +6,8 @@
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
 
+Reservation.destroy_all
+Listing.destroy_all
 User.destroy_all
 City.destroy_all
 
@@ -37,6 +39,37 @@ end
   c.save 
   c.errors.messages
 end
+
+20.times do 
+  sample = User.all.sample
+  l = Listing.new(
+    available_beds: rand(1..10),
+    price: rand(50..1000),
+    description: Faker::Lorem.paragraph_by_chars(number: 160, supplemental: false),
+    has_wifi: Faker::Boolean.boolean,
+    welcome_message: Faker::ChuckNorris.fact,
+    user: sample,
+    admin: sample,
+    city: City.all.sample
+  )
+  l.errors.messages
+  l.save
+end
+
+20.times do 
+  sample = User.all.sample
+  r = Reservation.new(
+    start_date: Time.now + rand(1000..5000),
+    end_date: Time.now + rand(6000..70000),
+    user: sample,
+    guest: sample,
+    listing: Listing.all.sample
+  )
+  r.errors.messages
+  r.save
+end
+
+
 
 puts "%" * 20 
 puts "%% Database filled! %%"

@@ -1,4 +1,9 @@
 class User < ApplicationRecord
+  has_many :reservations,
+    dependent: :destroy
+  has_many :listings,
+    dependent: :destroy
+   
   validates :email,
     presence: true,
     uniqueness: true,
